@@ -88,7 +88,9 @@ class ACMOJClient:
             print(f"⚠️ Warning: Failed to save submission ID: {e}")
 
     def submit_git(self, problem_id: int, git_url: str) -> Optional[Dict]:
-        data = {"language": "git", "code": git_url}
+        with open("src.hpp", "r") as f:
+            code = f.read()
+        data = {"language": "cpp", "code": code}
         result = self._make_request("POST", f"/problem/{problem_id}/submit", data=data)
         if result and 'id' in result:
             self._save_submission_id(result['id'])
